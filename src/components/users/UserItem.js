@@ -1,34 +1,33 @@
-import React, { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
-class UserItem extends Component {
+const UserItem = ({ user: { login, avatar_url, html_url } }) => {
+  // we can destructure the props right in the function params or have const {login, avatar_url, html_url} = props.user
+  // in functional components we pass props through the function params
   // constructor is used when component is loaded, we don't typically use constructors
 
-  // This is the component level state
-  state = {
-    id: "id",
-    login: "mojombo",
-    avatar_url: "https://avatars0.githubusercontent.com/u/1?v=4",
-    html_url: "https://github.com/mojombo",
-  };
-  render() {
-    const { login, avatar_url, html_url } = this.state; // Destructing, it's pulling these out of this.state
-    return (
-      <div className="card text-center">
-        <img
-          className="round-img"
-          src={avatar_url}
-          alt=""
-          style={{ width: "60px" }}
-        />
-        <h3>{login}</h3>
-        <div>
-          <a href={html_url} className="btn btn-dark btn-sm my-1">
-            More
-          </a>
-        </div>
+  // Since were not using class, we don't use this
+  // Destructing, it's pulling these out of this.props which is coming from a prop from the users state in that component
+  return (
+    <div className="card text-center">
+      <img
+        className="round-img"
+        src={avatar_url}
+        alt=""
+        style={{ width: "60px" }}
+      />
+      <h3>{login}</h3>
+      <div>
+        <a href={html_url} className="btn btn-dark btn-sm my-1">
+          More
+        </a>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+UserItem.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 
 export default UserItem;

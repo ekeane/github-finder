@@ -1,7 +1,7 @@
 import React, { Component } from "react"; // using destructuring
 import "./App.css";
 import Navbar from "./components/layout/Navbar.js"; // we can use the extention .js or not
-import UserItem from "./components/users/UserItem";
+import Users from "./components/users/Users";
 
 class App extends Component {
   // If you were to declare a function up here, you would need to reference it with 'this'
@@ -15,7 +15,9 @@ class App extends Component {
       <div>
         <Navbar title="Github Finder" icon="fab fa-github" />
         {/* We pass props into the components so the components can use them, these props overwrite default props */}
-        <UserItem />
+        <div className="container">
+          <Users />
+        </div>
       </div>
     );
   }
