@@ -1,34 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import UserItem from "./UserItem";
+import Spinner from "../layout/Spinner";
+import PropTypes from "prop-types";
 
-class Users extends Component {
-  state = {
-    users: [
-      // JSON object with three users
-      {
-        id: "1",
-        login: "mojombo",
-        avatar_url: "https://avatars0.githubusercontent.com/u/1?v=4",
-        html_url: "https://github.com/mojombo",
-      },
-      {
-        id: "2",
-        login: "mojombo",
-        avatar_url: "https://avatars0.githubusercontent.com/u/1?v=4",
-        html_url: "https://github.com/mojombo",
-      },
-      {
-        id: "3",
-        login: "mojombo",
-        avatar_url: "https://avatars0.githubusercontent.com/u/1?v=4",
-        html_url: "https://github.com/mojombo",
-      },
-    ],
-  };
-  render() {
+const Users = ({ users, loading }) => {
+  if (loading) {
+    return <Spinner />;
+  } else {
     return (
       <div style={userStyle}>
-        {this.state.users.map((
+        {users.map((
           user // although this is JS within the {}, we still need to use () when returning some JSX
         ) => (
           <UserItem key={user.id} user={user} /> // pass a key to each list item so there is no unique key prop error
@@ -37,7 +18,13 @@ class Users extends Component {
       </div>
     );
   }
-}
+};
+
+// Prop types:
+Users.propTypes = {
+  users: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 // We can add styling
 const userStyle = {
