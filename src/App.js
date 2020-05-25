@@ -5,16 +5,19 @@ import Users from "./components/users/Users";
 import Search from "./components/users/Search";
 import PropTypes from "prop-types";
 import Clear from "./components/users/Clear";
+import Alert from "./components/layout/Alert";
 
 class App extends Component {
   state = {
     users: [],
     loading: false,
     showClear: false,
+    alert: null,
   };
 
   static propTypes = {
     searchUsers: PropTypes.func.isRequired,
+    showClear: PropTypes.bool.isRequired,
   };
 
   // this is a lifecycle method, fires when component loads
@@ -45,6 +48,13 @@ class App extends Component {
     this.setState({ users: [], showClear: false });
   };
 
+  setAlert = (msg, type) => {
+    this.setState({ alert: { msg: msg, type: type } });
+    setTimeout(() => {
+      this.setState({ alert: null });
+    }, 3000);
+  };
+
   // If you were to declare a function up here, you would need to reference it with 'this'
   render() {
     // Everything in this return is JSX, we use className in JSX, JSX must have 1 parent element
@@ -57,7 +67,11 @@ class App extends Component {
         <Navbar title="Github Finder" icon="fab fa-github" />
         {/* We pass props into the components so the components can use them, these props overwrite default props */}
         <div className="container">
-          <Search searchUsers={this.searchUsers} />{" "}
+          <Alert alert={this.state.alert} />
+          <Search
+            searchUsers={this.searchUsers}
+            setAlert={this.setAlert}
+          />{" "}
           <Clear
             clearUsers={this.clearUsers}
             showClear={this.state.showClear}
