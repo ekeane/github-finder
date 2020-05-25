@@ -4,11 +4,13 @@ import Navbar from "./components/layout/Navbar.js"; // we can use the extention 
 import Users from "./components/users/Users";
 import Search from "./components/users/Search";
 import PropTypes from "prop-types";
+import Clear from "./components/users/Clear";
 
 class App extends Component {
   state = {
     users: [],
     loading: false,
+    showClear: false,
   };
 
   static propTypes = {
@@ -23,7 +25,9 @@ class App extends Component {
       `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
     ) // must use backticks if we wish to place variable in string
       .then((res) => res.json())
-      .then((data) => this.setState({ users: data, loading: false }));
+      .then((data) =>
+        this.setState({ users: data, loading: false, showClear: true })
+      );
   }
 
   searchUsers = (text) => {
@@ -32,7 +36,13 @@ class App extends Component {
       `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
     ) // must use backticks if we wish to place variable in string
       .then((res) => res.json())
-      .then((data) => this.setState({ users: data.items, loading: false }));
+      .then((data) =>
+        this.setState({ users: data.items, loading: false, showClear: true })
+      );
+  };
+
+  clearUsers = () => {
+    this.setState({ users: [], showClear: false });
   };
 
   // If you were to declare a function up here, you would need to reference it with 'this'
@@ -48,6 +58,10 @@ class App extends Component {
         {/* We pass props into the components so the components can use them, these props overwrite default props */}
         <div className="container">
           <Search searchUsers={this.searchUsers} />{" "}
+          <Clear
+            clearUsers={this.clearUsers}
+            showClear={this.state.showClear}
+          />
           {/* This function is getting down to grab the data on submit of the form*/}
           <Users loading={this.state.loading} users={this.state.users} />
           {/* {this.state.users} */}
