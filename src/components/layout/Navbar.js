@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ icon, title }) => {
   // const { icon, title } = props; another way to destructure
@@ -9,6 +10,14 @@ const Navbar = ({ icon, title }) => {
         <i style={{ margin: "10px" }} className={icon}></i>
         {title}
       </h1>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/about">About</Link>
+        </li>
+      </ul>
     </nav>
   );
 };

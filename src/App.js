@@ -1,4 +1,5 @@
 import React, { Component } from "react"; // using destructuring
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/layout/Navbar.js"; // we can use the extention .js or not
 import Users from "./components/users/Users";
@@ -6,6 +7,8 @@ import Search from "./components/users/Search";
 import PropTypes from "prop-types";
 import Clear from "./components/users/Clear";
 import Alert from "./components/layout/Alert";
+import About from "./components/pages/About";
+import User from "./components/users/User";
 
 class App extends Component {
   state = {
@@ -13,6 +16,7 @@ class App extends Component {
     loading: false,
     showClear: false,
     alert: null,
+    user: {},
   };
 
   static propTypes = {
@@ -44,6 +48,18 @@ class App extends Component {
       );
   };
 
+  // Get single Github User:
+  getUser = (userName) => {
+    this.setState({ loading: true });
+    fetch(
+      `https://api.github.com/users/${userName}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    ) // must use backticks if we wish to place variable in string
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ user: data, loading: false, showClear: true });
+      });
+  };
+
   clearUsers = () => {
     this.setState({ users: [], showClear: false });
   };
@@ -63,24 +79,53 @@ class App extends Component {
     // If we are not using an else case in the ternary operator, we can just && as if it is false, will not render the next piece
 
     return (
-      <div>
-        <Navbar title="Github Finder" icon="fab fa-github" />
-        {/* We pass props into the components so the components can use them, these props overwrite default props */}
-        <div className="container">
-          <Alert alert={this.state.alert} />
-          <Search
-            searchUsers={this.searchUsers}
-            setAlert={this.setAlert}
-          />{" "}
-          <Clear
-            clearUsers={this.clearUsers}
-            showClear={this.state.showClear}
-          />
-          {/* This function is getting down to grab the data on submit of the form*/}
-          <Users loading={this.state.loading} users={this.state.users} />
-          {/* {this.state.users} */}
+      <Router>
+        <div>
+          <Navbar title="Github Finder" icon="fab fa-github" />
+          {/* We pass props into the components so the components can use them, these props overwrite default props */}
+          <div className="container">
+            <Alert alert={this.state.alert} />
+
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={(
+                  props // instead of using a component for the route you can use render and then pass in multi components
+                ) => (
+                  <div>
+                    <Search
+                      searchUsers={this.searchUsers}
+                      setAlert={this.setAlert}
+                    />
+                    <Clear
+                      clearUsers={this.clearUsers}
+                      showClear={this.state.showClear}
+                    />
+                    <Users
+                      loading={this.state.loading}
+                      users={this.state.users}
+                    />
+                  </div>
+                )}
+              />
+              <Route exact path="/about" component={About} />
+              <Route
+                exact
+                path="/user/:login" // this is a slug and is a variable link
+                render={(props) => (
+                  <User
+                    {...props}
+                    getUser={this.getUser}
+                    user={this.state.user}
+                    loading={this.state.loading}
+                  />
+                )}
+              />
+            </Switch>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
