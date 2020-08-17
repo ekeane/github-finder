@@ -9,6 +9,7 @@ import Clear from "./components/users/Clear";
 import Alert from "./components/layout/Alert";
 import About from "./components/pages/About";
 import User from "./components/users/User";
+import GithubState from "./context/github/GithubState";
 
 const App = () => {
   const [users, setUsers] = useState([]);
@@ -32,19 +33,6 @@ const App = () => {
         setShowClear(true);
       });
   }, []);
-
-  const searchUsers = (text) => {
-    setLoading(true);
-    fetch(
-      `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
-    ) // must use backticks if we wish to place variable in string
-      .then((res) => res.json())
-      .then((data) => {
-        setUsers(data.items);
-        setLoading(false);
-        setShowClear(true);
-      });
-  };
 
   // Get single Github User:
   const getUser = (userName) => {
@@ -88,46 +76,45 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <div>
-        <Navbar title="Github Finder" icon="fab fa-github" />
-        <div className="container">
-          <Alert alert={alert} />
+    <GithubState>
+      <Router>
+        <div>
+          <Navbar title="Github Finder" icon="fab fa-github" />
+          <div className="container">
+            <Alert alert={alert} />
 
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={(props) => (
-                <div>
-                  <Search
-                    searchUsers={searchUsers}
-                    setAlert={setAlertTimeOut}
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <div>
+                    <Search setAlert={setAlertTimeOut} />
+                    <Clear clearUsers={clearUsers} showClear={showClear} />
+                    <Users loading={loading} users={users} />
+                  </div>
+                )}
+              />
+              <Route exact path="/about" component={About} />
+              <Route
+                exact
+                path="/user/:login" // this is a slug and is a variable link
+                render={(props) => (
+                  <User
+                    {...props}
+                    getUser={getUser}
+                    getUserRepos={getUserRepos}
+                    user={user}
+                    loading={loading}
+                    repos={repos}
                   />
-                  <Clear clearUsers={clearUsers} showClear={showClear} />
-                  <Users loading={loading} users={users} />
-                </div>
-              )}
-            />
-            <Route exact path="/about" component={About} />
-            <Route
-              exact
-              path="/user/:login" // this is a slug and is a variable link
-              render={(props) => (
-                <User
-                  {...props}
-                  getUser={getUser}
-                  getUserRepos={getUserRepos}
-                  user={user}
-                  loading={loading}
-                  repos={repos}
-                />
-              )}
-            />
-          </Switch>
+                )}
+              />
+            </Switch>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </GithubState>
   );
 };
 
