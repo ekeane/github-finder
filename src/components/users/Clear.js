@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import GithubContext from "../../context/github/githubContext";
 
-const Clear = ({ clearUsers }) => {
+const Clear = () => {
   const githubContext = useContext(GithubContext);
 
   return (
