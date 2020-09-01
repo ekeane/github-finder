@@ -1,10 +1,15 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, Fragment, useContext } from "react";
 import Spinner from "../layout/Spinner";
-import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Repos from "../repos/Repos";
+import GithubContext from "../../context/github/githubContext";
 
-const User = ({ getUser, getUserRepos, match, user, loading, repos }) => {
+const User = ({ match }) => {
+  const githubContext = useContext(GithubContext);
+
+  // Destructuring functions from context:
+  const { getUser, loading, user, getUserRepos, repos } = githubContext;
+
   useEffect(() => {
     getUser(match.params.login); // .match.params.login or whatever the var name is to get that parameter
     getUserRepos(match.params.login);
@@ -99,10 +104,6 @@ const User = ({ getUser, getUserRepos, match, user, loading, repos }) => {
   }
 };
 
-User.propTypes = {
-  loading: propTypes.bool,
-  user: propTypes.object.isRequired,
-  getUser: propTypes.func.isRequired,
-};
+User.propTypes = {};
 
 export default User;

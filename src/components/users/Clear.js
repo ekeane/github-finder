@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
+import GithubContext from "../../context/github/githubContext";
 
-const Clear = ({ clearUsers, showClear }) => {
+const Clear = ({ clearUsers }) => {
+  const githubContext = useContext(GithubContext);
+
   return (
     <div>
       <input
-        type={showClear ? "submit" : "hidden"}
+        type={githubContext.users.length > 0 ? "submit" : "hidden"}
         value="Clear"
         className="btn btn-light btn-block"
-        onClick={clearUsers}
+        onClick={githubContext.clearUsers}
       />
     </div>
   );
