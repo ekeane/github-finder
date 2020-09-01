@@ -14,11 +14,8 @@ const Users = () => {
   } else {
     return (
       <div style={userStyle}>
-        {users.map((
-          user // although this is JS within the {}, we still need to use () when returning some JSX
-        ) => (
-          <UserItem key={user.id} user={user} /> // pass a key to each list item so there is no unique key prop error
-          // Passing in all the needed data as a prop
+        {users.map((user) => (
+          <UserItem key={user.id} user={user} />
         ))}
       </div>
     );
