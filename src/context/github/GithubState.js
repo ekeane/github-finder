@@ -90,15 +90,17 @@ const GithubState = (props) => {
   // Set show clear
   const setShowClear = () => dispatch({ type: CLEAR_USERS });
 
+  // You have to wrap the whole application with the provider so the whole app has access
+  // Everything in value is what we want available to the entire app
+  // The data sources and associated functions
+
   return (
-    // You have to wrap the whole application with the provider so the whole app has access
     <GithubContext.Provider
-      // Everything in value is what we want available to the entire app
       value={{
         users: state.users,
         user: state.user,
         repos: state.repos,
-        loading: state.loading, // The data sources and associated functions
+        loading: state.loading,
         searchUsers,
         clearUsers,
         getUser,

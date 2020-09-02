@@ -23,14 +23,8 @@ const App = () => {
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/about" component={About} />
-                <Route
-                  exact
-                  path="/user/:login" // this is a slug and is a variable link
-                  component={User}
-                />
-                <Route
-                  component={NotFound} // put this as the last component as if the router doesn't find a match it will go here
-                />
+                <Route exact path="/user/:login" component={User} />
+                <Route component={NotFound} />
               </Switch>
             </div>
           </div>

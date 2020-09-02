@@ -24,9 +24,7 @@ const AlertState = (props) => {
   };
 
   return (
-    // You have to wrap the whole application with the provider so the whole app has access
     <AlertContext.Provider
-      // Everything in value is what we want available to the entire app
       value={{
         alert: state,
         setAlert,
