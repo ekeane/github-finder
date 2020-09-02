@@ -5,7 +5,7 @@ import { SET_ALERT, REMOVE_ALERT } from "../types";
 
 // This Github state includes all of our actions
 const AlertState = (props) => {
-  const initialState = null; // Since there is only one piece of state
+  const initialState = ""; // Since there is only one piece of state
 
   const [state, dispatch] = useReducer(AlertReducer, initialState);
 
