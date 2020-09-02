@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import AlertContext from "../../context/alert/alertContext";
 
 export const Alert = () => {
-  // Set context
   const alertContext = useContext(AlertContext);
 
   const { alert } = alertContext;
